@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,7 +39,7 @@ public class PaymentController {
         return ResponseEntity.ok(createdPayment);
     }
 
-    // ✅ Update payment status
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{paymentId}/status")
     public ResponseEntity<PaymentDto> updatePaymentStatus(
             @PathVariable int userId,

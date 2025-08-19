@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,18 +48,20 @@ public class UserController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Integer userId) {
 	    this.userService.deleteUser(userId);
 	    return new ResponseEntity<>(Map.of("Message", "User Deleted Successfully"), HttpStatus.OK);
 	}
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/")
 	public ResponseEntity <List<UserDto>> getAllUsers(){
 		return ResponseEntity.ok(this.userService.getAllUsers());
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> getUser(@PathVariable("userId") Integer userId){
 		return ResponseEntity.ok(this.userService.getUserById(userId));
